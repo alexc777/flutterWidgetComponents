@@ -11,6 +11,7 @@ final _icons = <String, IconData>{
   'tune'          : Icons.tune,
   'aod_outlined'  : Icons.ad_units_outlined,
   'table'         : Icons.table_chart_outlined,
+  'parcial'       : Icons.quiz,
 };
 
 

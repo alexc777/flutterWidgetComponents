@@ -45,6 +45,11 @@
             "ruta" : "table",
             "icon" : "table",
             "texto": "Table - Widget"
+        },
+        {
+            "ruta" : "parcial",
+            "icon" : "parcial",
+            "texto": "Examen Parcial"
         }
     ]
 }
