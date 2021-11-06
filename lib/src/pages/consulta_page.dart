@@ -25,6 +25,10 @@ class _ConsultaPageState extends State<ConsultaPage> {
   List<String> _tiposMascota = ['Perro', 'Gato', 'Hámsters', 'Pájaros', 'Peces'];
 
   TextEditingController _inputFieldDateController = new TextEditingController();
+  final TextEditingController _controller = new TextEditingController();
+  final TextEditingController _controller_2 = new TextEditingController();
+  final TextEditingController _controller_3 = new TextEditingController();
+  final TextEditingController _controller_4 = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,21 @@ class _ConsultaPageState extends State<ConsultaPage> {
       appBar: AppBar(
         title: Text('Examen Parcial'),
       ),
-      body: ListView(
+      body: GridView.count(
+        crossAxisCount: 1,
+        children: <Widget>[
+          _crearListaForm(),
+          _listarData(),
+        ],
+      ),
+      floatingActionButton: _crearBoton()
+    );
+  }
+
+  Widget _crearListaForm() {
+
+    return ListView(
+        shrinkWrap: true,
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
         children: <Widget>[
           _crearNombreMascota(),
@@ -51,15 +69,15 @@ class _ConsultaPageState extends State<ConsultaPage> {
           Divider(),
           _crearFecha( context ),
         ],
-      ),
-      floatingActionButton: _crearBoton()
     );
+
   }
 
   Widget _crearNombreMascota() {
 
     return TextField(
       // autofocus: true,
+      controller: _controller,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -82,6 +100,7 @@ class _ConsultaPageState extends State<ConsultaPage> {
 
     return TextField(
       // autofocus: true,
+      controller: _controller_2,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -103,6 +122,7 @@ class _ConsultaPageState extends State<ConsultaPage> {
   Widget _crearTelefonoPersona() {
 
     return TextField(
+      controller: _controller_3,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -124,6 +144,7 @@ class _ConsultaPageState extends State<ConsultaPage> {
   Widget _crearEdadMascota() {
 
     return TextField(
+      controller: _controller_4,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -141,7 +162,6 @@ class _ConsultaPageState extends State<ConsultaPage> {
     );
 
   }
-
 
   List<DropdownMenuItem<String>> getOpcionesDropdown() {
 
@@ -311,8 +331,46 @@ class _ConsultaPageState extends State<ConsultaPage> {
       ],
     );
   }
+
+
+  Widget _listarData() {
+
+    return ListView(
+
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+      children: _listaItems( ListaMascotas, context ),
+    );
+  }
+
+  List<Widget> _listaItems( List<dynamic> data, BuildContext context ) {
+
+    final List<Widget> opciones = [];
+
+
+    data.forEach( (opt) {
+
+      final widgetTemp = Column(
+        children: [
+          Text('Mascota: ' + opt['nombreMascota']),
+          Text('Dueño: ' + opt['nombrePersona'] ),
+          Text('Teléfono: ' + opt['telefono'] ),
+          Text('Raza: ' + opt['raza'] ),
+          Text('Sexo: ' + opt['sexo'] ),
+          Text('Edad: ' + opt['edadMascota'] ),
+          Text('Tipo: ' + opt['tipoMascota'] ),
+          Text('Nacimiento: ' + opt['nacimiento'] ),
+        ],
+      );
+
+      opciones..add( widgetTemp )
+              ..add( Divider() );
+    });
+
+    return opciones;
+
+  }
   
-  _crearMascota() {
+  void _crearMascota() {
 
     Map<String, dynamic> mascota = {
       'nombreMascota': _nombreMascota,
@@ -325,20 +383,21 @@ class _ConsultaPageState extends State<ConsultaPage> {
       'nacimiento': _fecha
     };
 
-    ListaMascotas.add(mascota);
+    setState(() {
+      ListaMascotas.add(mascota);
+
+      _inputFieldDateController.clear();
+      _controller.clear();
+      _controller_2.clear();
+      _controller_3.clear();
+      _controller_4.clear();
+    });
 
     print('---------------------Miremos el Map-------------------');
     print(mascota);
     
     print('---------------------Mascotas-------------------');
     print(ListaMascotas);
-
-    // return ListTile(
-    //   title: Text('Nombre es: $_nombre'),
-    //   subtitle: Text('Email: $_email'),
-    //   trailing: Text(_opcionSeleccionada),
-    // );
-
   }
 
 }
